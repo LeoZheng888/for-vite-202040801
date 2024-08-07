@@ -154,8 +154,6 @@ function saveName(item, key) {
 }
 
 function cancleEdit(item, key) {
-
-
   if (item.id - 1 == key) {
     item.tempName = item.name;
     item.edit = false
@@ -191,9 +189,6 @@ function cancleEdit(item, key) {
     <tbody v-for="(item, key) in data" :key="item.id">
       <tr>
         <td style="width: 100px;">{{ item.name }}
-          <!--   <input type="text" v-model="item.name" v-if="item.edit">
-          <button type="button" v-if="item.edit">儲存</button>
-          <button type="button" v-if="item.edit">取消</button> -->
         </td>
         <td style="width: 150px; text-align: center;"><small>{{ item.describe }}</small></td>
         <td style="width: 50px; text-align: center;">{{ item.price }}</td>
