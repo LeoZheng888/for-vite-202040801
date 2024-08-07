@@ -52,55 +52,71 @@ const data = ref([{
   name: '珍珠奶茶',
   describe: '香濃奶茶搭配QQ珍珠',
   price: 50,
-  inventory: 20
+  inventory: 20,
+  edit: false,
+  tempName: ''
 },
 {
   id: '2',
   name: '冬瓜檸檬',
   describe: '清新冬瓜配上新鮮檸檬',
   price: 45,
-  inventory: 18
+  inventory: 18,
+  edit: false,
+  tempName: ''
 }, {
   id: '3',
   name: '翡翠檸檬',
   describe: '綠茶與檸檬的完美結合',
   price: 55,
-  inventory: 34
+  inventory: 34,
+  edit: false,
+  tempName: ''
 },
 {
   id: '4',
   name: '四季春茶',
   describe: '香醇四季春茶，回甘無比',
   price: 45,
-  inventory: 10
+  inventory: 10,
+  edit: false,
+  tempName: ''
 },
 {
   id: '5',
   name: '阿薩姆奶茶',
   describe: '阿薩姆紅茶搭配香醇鮮奶',
   price: 50,
-  inventory: 25
+  inventory: 25,
+  edit: false,
+  tempName: ''
 },
 {
   id: '6',
   name: '檸檬冰茶',
   describe: '檸檬與冰茶的清新組合',
   price: 45,
-  inventory: 20
+  inventory: 20,
+  edit: false,
+  tempName: ''
 },
 {
   id: '7',
   name: '芒果綠茶',
   describe: '芒果與綠茶的獨特風味',
   price: 55,
-  inventory: 18
+  inventory: 18,
+  edit: false,
+  tempName: ''
 },
 {
   id: '8',
   name: '抹茶拿鐵',
   describe: '抹茶與鮮奶的絕配',
   price: 60,
-  inventory: 20
+  inventory: 20,
+  edit: false,
+  tempName: ''
 }
 ])
 
@@ -119,19 +135,32 @@ function Add(num, key) {
     num.inventory++
   }
 }
-const isChecked = ref(true)
+const isChecked = ref(false)
 
-function isCheck(item, key, test) {
-  console.log(item)
-  console.log(key)
-  console.log(typeof test)
+function isCheck(item, key) {
+
   if (item.id - 1 == key) {
-    this.isChecked = false
+    item.tempName = item.name
+    item.edit = true
   }
-
 
 }
 
+function saveName(item, key) {
+  if (item.id - 1 == key) {
+    item.name = item.tempName
+  }
+  item.edit = false
+}
+
+function cancleEdit(item, key) {
+
+
+  if (item.id - 1 == key) {
+    item.tempName = item.name;
+    item.edit = false
+  }
+}
 
 </script>
 
@@ -156,20 +185,27 @@ function isCheck(item, key, test) {
         <th scope="col">描述</th>
         <th scope="col">價格</th>
         <th scope="col">庫存</th>
+        <th scope="col">編輯品項</th>
       </tr>
     </thead>
     <tbody v-for="(item, key) in data" :key="item.id">
       <tr>
-        <td>{{ item.name }} <button type="button" @click="isCheck(item, key, isChecked)">編輯</button>
-          <input type="text" v-model="item.name" v-if="!isChecked">
-          <button type="button" v-if="isChecked">儲存</button>
-          <button type="button" v-if="isCheck(item, key, isChecked)">取消</button>
+        <td style="width: 100px;">{{ item.name }}
+          <!--   <input type="text" v-model="item.name" v-if="item.edit">
+          <button type="button" v-if="item.edit">儲存</button>
+          <button type="button" v-if="item.edit">取消</button> -->
         </td>
-        <td><small>{{ item.describe }}</small></td>
-        <td>{{ item.price }}</td>
+        <td style="width: 150px; text-align: center;"><small>{{ item.describe }}</small></td>
+        <td style="width: 50px; text-align: center;">{{ item.price }}</td>
         <td><button type="button" @click="Reduce(item, key)">-</button>
           {{ item.inventory }}
           <button type="button" @click="Add(item, key)">+</button>
+        </td>
+        <td>
+          <button style="width: 50px; text-align: center;" type="button" @click="isCheck(item, key)">編輯</button>
+          <input type="text" v-model="item.tempName" v-if="item.edit">
+          <button type="button" v-if="item.edit" @click="saveName(item, key)">儲存</button>
+          <button type="button" v-if="item.edit" @click="cancleEdit(item, key)">取消</button>
         </td>
       </tr>
     </tbody>
